@@ -25,8 +25,8 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int bufferForIndex = 0;                             //Переменная для хранение индекса удаленного резюме
-        int bufferForLastIndex = getIndexWithoutNull();    //Переменная для хранения последнего индекса без Null (Она нужна, так как использую второй массив)
+        int bufferForIndex = 0;                          //Переменная для хранение индекса удаленного резюме
+        int bufferForLastIndex = getIndexWithoutNull(); //Переменная для хранения последнего индекса без Null (Она нужна, так как использую второй цикл)
         for (int i = 0; i < bufferForLastIndex - 1; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 bufferForIndex = i;
@@ -50,8 +50,8 @@ public class ArrayStorage {
         return getIndexWithoutNull();
     }
 
-    //Метод для опредления индекса без null в массиве Storage
-    int getIndexWithoutNull() {
+    //Метод для опредления последнего индекса без null в массиве Storage
+    private int getIndexWithoutNull() {
         int i = 0;
         while (storage[i] != null) {
             i++;
