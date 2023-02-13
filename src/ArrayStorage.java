@@ -21,22 +21,21 @@ public class ArrayStorage {
                 return storage[i];
             }
         }
-        System.out.println("Резюме с таким id нет");
         return null;
     }
 
     void delete(String uuid) {
-        int bufferForIndex = 0;//Переменная для хранение индекса удаленного резюме
-        int bufferForLastIndex = getIndexWithoutNull();
-        for (int i = 0; i < bufferForLastIndex; i++) {
+        int bufferForIndex = 0;                             //Переменная для хранение индекса удаленного резюме
+        int bufferForLastIndex = getIndexWithoutNull();    //Переменная для хранения последнего индекса без Null (Она нужна, так как использую второй массив)
+        for (int i = 0; i < bufferForLastIndex - 1; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 bufferForIndex = i;
                 storage[i] = null;
             }
         }
 
-        for (int j = bufferForIndex + 1; j < bufferForLastIndex; j++) {
-            storage[j - 1] = storage[j];
+        for (int j = bufferForIndex; j < bufferForLastIndex; j++) {
+            storage[j] = storage[j + 1];
         }
     }
 
@@ -44,7 +43,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage,getIndexWithoutNull());
+        return Arrays.copyOf(storage, getIndexWithoutNull());
     }
 
     int size() {
