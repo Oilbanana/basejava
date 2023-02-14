@@ -6,9 +6,10 @@ import java.util.Arrays;
 
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    // private int size = getIndexWithoutNull();
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, getIndexWithoutNull(), null);
     }
 
     void save(Resume r) {
@@ -25,17 +26,26 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int bufferForIndex = 0;                          //Переменная для хранение индекса удаленного резюме
-        int bufferForLastIndex = getIndexWithoutNull(); //Переменная для хранения последнего индекса без Null (Она нужна, так как использую второй цикл)
-        for (int i = 0; i < bufferForLastIndex - 1; i++) {
+        int indexForDelete = -1;
+        int bufferForLastIndex = getIndexWithoutNull();
+        if (bufferForLastIndex == 0) {
+            System.out.println("Добавьте резюме для работы метода delete");
+            return;
+        }
+        for (int i = 0; i < bufferForLastIndex; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                bufferForIndex = i;
+                indexForDelete = i;
                 storage[i] = null;
             }
         }
-
-        for (int j = bufferForIndex; j < bufferForLastIndex; j++) {
-            storage[j] = storage[j + 1];
+        try {
+            for (int j = indexForDelete; j < bufferForLastIndex; j++) {
+                storage[j] = storage[j + 1];
+            }
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            System.out.println("----------------------------");
+            System.out.println("Не найден нужный индекс попробуйте снова");
+            System.out.println("-----------------------------");
         }
     }
 
@@ -48,6 +58,7 @@ public class ArrayStorage {
 
     int size() {
         return getIndexWithoutNull();
+        //return size;
     }
 
     //Метод для опредления последнего индекса без null в массиве Storage
