@@ -6,18 +6,20 @@ import java.util.Arrays;
 
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    // private int size = getIndexWithoutNull();
+    private int size = 0;
 
     void clear() {
-        Arrays.fill(storage, 0, getIndexWithoutNull(), null);
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     void save(Resume r) {
-        storage[getIndexWithoutNull()] = r;
+        storage[size] = r;
+        size += 1;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < getIndexWithoutNull(); i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -27,7 +29,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int indexForDelete = -1;
-        int bufferForLastIndex = getIndexWithoutNull();
+        int bufferForLastIndex = size;
         if (bufferForLastIndex == 0) {
             System.out.println("Добавьте резюме для работы метода delete");
             return;
@@ -36,6 +38,7 @@ public class ArrayStorage {
             if (storage[i].uuid.equals(uuid)) {
                 indexForDelete = i;
                 storage[i] = null;
+                size--;
             }
         }
         try {
@@ -43,9 +46,7 @@ public class ArrayStorage {
                 storage[j] = storage[j + 1];
             }
         } catch (ArrayIndexOutOfBoundsException exception) {
-            System.out.println("----------------------------");
             System.out.println("Не найден нужный индекс попробуйте снова");
-            System.out.println("-----------------------------");
         }
     }
 
@@ -53,21 +54,11 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage, getIndexWithoutNull());
+        return Arrays.copyOf(storage, size);
     }
 
     int size() {
-        return getIndexWithoutNull();
-        //return size;
-    }
-
-    //Метод для опредления последнего индекса без null в массиве Storage
-    private int getIndexWithoutNull() {
-        int i = 0;
-        while (storage[i] != null) {
-            i++;
-        }
-        return i;
+        return size;
     }
 
 }
