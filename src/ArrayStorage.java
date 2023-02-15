@@ -28,25 +28,19 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int indexForDelete = -1;
-        int bufferForLastIndex = size;
-        if (bufferForLastIndex == 0) {
+       Resume temp;
+        /*if (size == 0) {
             System.out.println("Добавьте резюме для работы метода delete");
             return;
-        }
-        for (int i = 0; i < bufferForLastIndex; i++) {
+        }*/
+        for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                indexForDelete = i;
-                storage[i] = null;
+                 temp = storage[size-1];
+                storage[size] = storage[i];
+                storage[i] = temp;
                 size--;
+
             }
-        }
-        try {
-            for (int j = indexForDelete; j < bufferForLastIndex; j++) {
-                storage[j] = storage[j + 1];
-            }
-        } catch (ArrayIndexOutOfBoundsException exception) {
-            System.out.println("Не найден нужный индекс попробуйте снова");
         }
     }
 
