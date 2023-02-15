@@ -28,14 +28,10 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-       Resume temp;
-        /*if (size == 0) {
-            System.out.println("Добавьте резюме для работы метода delete");
-            return;
-        }*/
+        Resume temp;
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                 temp = storage[size-1];
+                temp = storage[size - 1];
                 storage[size] = storage[i];
                 storage[i] = temp;
                 size--;
