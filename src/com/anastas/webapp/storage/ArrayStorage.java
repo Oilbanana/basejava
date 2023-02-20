@@ -21,7 +21,7 @@ public class ArrayStorage {
 
         for (int i = 0; i <= size - 1; i++) {
             if (storage[i].getUuid().equals(r.getUuid())) {
-                errorMessage();
+                System.out.println("ERROR: Введите новое резюме, а не существующее: " + r.getUuid());
                 flagForError = true;
                 break;
             }
@@ -61,13 +61,6 @@ public class ArrayStorage {
 
     public int size() {
         return size;
-    }
-
-    private void errorMessage() {
-        System.out.println("----------------------------");
-        System.out.println("ERROR");
-        System.out.println("----------------------------");
-
     }
 
 }
