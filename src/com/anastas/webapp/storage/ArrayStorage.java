@@ -17,39 +17,55 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        boolean flagForError = false;
-
-        for (int i = 0; i <= size - 1; i++) {
+        boolean flagForSave = false; // флаг для сохранения резюме
+        if (size > storage.length) {
+            System.out.println("ERROR: Хранилище переполнено.");
+        }
+       /* for (int i = 0; i <= size - 1; i++) {
             if (storage[i].getUuid().equals(r.getUuid())) {
                 System.out.println("ERROR: Введите новое резюме, а не существующее: " + r.getUuid());
-                flagForError = true;
+                flagForSave = true;
                 break;
             }
         }
-        if (!flagForError) {
+        if (!flagForSave) {
             storage[size] = r;
             size++;
+        }*/
+        if (!checkResumeIsPresent(r.getUuid())) {
+            storage[size] = r;
+            size++;
+        } else {
+            System.out.println("ERROR: Введите новое резюме, а не существующее: " + r.getUuid());
         }
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
+        if (checkResumeIsPresent(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(uuid))
+                    return storage[i];
             }
+        } else {
+            System.out.println("ERROR: Введите существующее резюме,а не " + uuid);
         }
         return null;
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = storage[size - 1];
-                size--;
-                storage[size] = null;
-                break;
+        if (checkResumeIsPresent(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    storage[i] = storage[size - 1];
+                    size--;
+                    storage[size] = null;
+                    break;
+                }
             }
+        } else {
+            System.out.println("ERROR: Введите существующее резюме, а не " + uuid);
         }
+
     }
 
     /**
@@ -63,4 +79,14 @@ public class ArrayStorage {
         return size;
     }
 
+    private boolean checkResumeIsPresent(String uuid) {
+        boolean flagForError = false;
+        for (int i = 0; i <= size - 1; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                flagForError = true;
+                return flagForError;
+            }
+        }
+        return flagForError;
+    }
 }
