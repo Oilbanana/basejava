@@ -16,22 +16,23 @@ public class ArrayStorage {
         size = 0;
     }
 
+    public void update(Resume r) {
+        if (checkResumeIsPresent(r.getUuid())) {
+            for (int i = 0; i < size - 1; i++) {
+                if (storage[i].getUuid().equals(r.getUuid())) {
+                    storage[i] = r;
+                }
+            }
+        } else {
+            System.out.println("ERROR: Введите существующее резюме,а не " + r.getUuid());
+        }
+
+    }
+
     public void save(Resume r) {
-        boolean flagForSave = false; // флаг для сохранения резюме
         if (size > storage.length) {
             System.out.println("ERROR: Хранилище переполнено.");
         }
-       /* for (int i = 0; i <= size - 1; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
-                System.out.println("ERROR: Введите новое резюме, а не существующее: " + r.getUuid());
-                flagForSave = true;
-                break;
-            }
-        }
-        if (!flagForSave) {
-            storage[size] = r;
-            size++;
-        }*/
         if (!checkResumeIsPresent(r.getUuid())) {
             storage[size] = r;
             size++;
