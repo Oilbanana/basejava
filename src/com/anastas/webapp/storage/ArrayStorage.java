@@ -17,8 +17,19 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        storage[size] = r;
-        size++;
+        boolean flagForError = false;
+
+        for (int i = 0; i <= size - 1; i++) {
+            if (storage[i].getUuid().equals(r.getUuid())) {
+                errorMessage();
+                flagForError = true;
+                break;
+            }
+        }
+        if (!flagForError) {
+            storage[size] = r;
+            size++;
+        }
     }
 
     public Resume get(String uuid) {
@@ -50,6 +61,13 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private void errorMessage() {
+        System.out.println("----------------------------");
+        System.out.println("ERROR");
+        System.out.println("----------------------------");
+
     }
 
 }
