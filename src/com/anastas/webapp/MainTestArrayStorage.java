@@ -2,12 +2,13 @@ package com.anastas.webapp;
 
 import com.anastas.webapp.model.Resume;
 import com.anastas.webapp.storage.ArrayStorage;
+import com.anastas.webapp.storage.Storage;
 
 /**
  * Test for your com.anastas.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
