@@ -1,5 +1,8 @@
 package com.anastas.webapp.storage;
 
+import com.anastas.webapp.exception.ExistStorageException;
+import com.anastas.webapp.exception.NotExistStorageException;
+import com.anastas.webapp.exception.StorageException;
 import com.anastas.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -27,8 +30,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index <= -1) {
-            System.out.println("ERROR: Введите существующее резюме,а не " + uuid);
-            return null;
+            throw  new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -38,7 +40,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > -1) {
             storage[index] = r;
         } else {
-            System.out.println("ERROR: Введите существующее резюме, а не " + r.getUuid());
+            throw new NotExistStorageException(r.getUuid());
         }
 
     }
@@ -46,13 +48,13 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (size > STORAGE_LIMIT) {
-            System.out.println("ERROR: Хранилище переполнено.");
+            throw new StorageException("Storage overflow ", r.getUuid());
         }
         if (index <= -1) {
             insertResume(index, r);
             size++;
         } else {
-            System.out.println("ERROR: Введите новое резюме, а не существующее: " + r.getUuid());
+            throw new ExistStorageException(r.getUuid());
         }
     }
 
@@ -63,7 +65,7 @@ public abstract class AbstractArrayStorage implements Storage {
             size--;
             storage[size] = null;
         } else {
-            System.out.println("ERROR: Введите существующее резюме, а не " + uuid);
+            throw new NotExistStorageException(uuid);
         }
     }
 
