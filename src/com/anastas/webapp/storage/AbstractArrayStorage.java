@@ -1,8 +1,6 @@
 package com.anastas.webapp.storage;
 
-import com.anastas.webapp.exception.ExistStorageException;
-import com.anastas.webapp.exception.NotExistStorageException;
-import com.anastas.webapp.exception.StorageException;
+import com.anastas.webapp.exception.*;
 import com.anastas.webapp.model.Resume;
 
 import java.util.Arrays;

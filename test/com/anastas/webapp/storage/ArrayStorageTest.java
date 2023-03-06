@@ -1,20 +1,8 @@
 package com.anastas.webapp.storage;
 
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ArrayStorageTest {
-
-    @Test
-    void getIndex() {
-    }
-
-    @Test
-    void insertResume() {
-    }
-
-    @Test
-    void deleteResume() {
+class ArrayStorageTest extends AbstractArrayStorageTest {
+    ArrayStorageTest() {
+        super(new ArrayStorage());
     }
 }
