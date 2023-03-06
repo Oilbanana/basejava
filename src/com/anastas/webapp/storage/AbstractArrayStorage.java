@@ -40,7 +40,6 @@ public abstract class AbstractArrayStorage implements Storage {
         } else {
             throw new NotExistStorageException(r.getUuid());
         }
-
     }
 
     public final void save(Resume r) {
