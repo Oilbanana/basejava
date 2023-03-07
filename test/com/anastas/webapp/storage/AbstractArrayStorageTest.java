@@ -1,5 +1,6 @@
 package com.anastas.webapp.storage;
 
+import com.anastas.webapp.exception.NotExistStorageException;
 import com.anastas.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,14 +33,15 @@ public abstract class AbstractArrayStorageTest {
     void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] exceptedArray ={};
+        Resume[] exceptedArray = {};
         Assertions.assertArrayEquals(exceptedArray, storage.getAll());
     }
 
     @Test
     void getAll() {
-        Resume[] excepted = {storage.get("uuid1"), storage.get("uuid2"), storage.get("uuid3")};
+        Resume[] excepted = {RESUME_1, RESUME_2, RESUME_3};
         Assertions.assertArrayEquals(excepted, storage.getAll());
+        assertSize(3);
     }
 
     @Test
@@ -56,20 +58,33 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void update() {
+        Resume updatableResume = new Resume(UUID_1);
+        storage.update(updatableResume);
+        Assertions.assertSame(storage.get(updatableResume.getUuid()), updatableResume);
     }
 
     @Test
     void save() {
+        storage.save(RESUME_4);
+        assertGet(RESUME_4);
+        assertSize(4);
     }
 
     @Test
     void delete() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> {
+            storage.delete(UUID_2);
+            assertGet(RESUME_2);
+        }, "NotExistStorageException not thrown");
+        assertSize(-1);
     }
 
-    void assertSize(int expected){
+    // Общие методы
+    void assertSize(int expected) {
         Assertions.assertEquals(expected, storage.size());
     }
-    void assertGet(Resume r){
+
+    void assertGet(Resume r) {
         Assertions.assertEquals(r, storage.get(r.getUuid()));
     }
 }
