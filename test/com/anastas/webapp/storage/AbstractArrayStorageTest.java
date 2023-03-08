@@ -1,10 +1,14 @@
 package com.anastas.webapp.storage;
 
+import com.anastas.webapp.exception.ExistStorageException;
 import com.anastas.webapp.exception.NotExistStorageException;
+import com.anastas.webapp.exception.StorageException;
 import com.anastas.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static com.anastas.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
@@ -57,10 +61,24 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
+    void getNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> {
+            assertGet(new Resume("randomUuid"));
+        }, "NotExistStorageException not thrown");
+    }
+
+    @Test
     void update() {
         Resume updatableResume = new Resume(UUID_1);
         storage.update(updatableResume);
         Assertions.assertSame(storage.get(updatableResume.getUuid()), updatableResume);
+    }
+
+    @Test
+    void updateNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> {
+            storage.update(new Resume("randomUuid"));
+        }, "NotExistStorageException not thrown");
     }
 
     @Test
@@ -71,12 +89,41 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
+    void saveExist() {
+        Assertions.assertThrows(ExistStorageException.class, () -> {
+            storage.save(RESUME_1);
+        }, "ExistStorageException not thrown");
+    }
+
+    @Test
+    void saveOverFlow() {
+        Assertions.assertThrows(StorageException.class, () -> {
+            try {
+                for (int i = 4; i < STORAGE_LIMIT + 1; i++) {
+                    storage.save(new Resume());
+                }
+            } catch (StorageException e) {
+                Assertions.fail("StorageOverflowException called a head of time");
+            }
+            storage.save(new Resume());
+        });
+    }
+
+    @Test
     void delete() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
             storage.delete(UUID_2);
             assertGet(RESUME_2);
         }, "NotExistStorageException not thrown");
-        assertSize(-1);
+        assertSize(2);
+    }
+
+    @Test
+    void deleteNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> {
+            storage.delete("RandomUuid");
+        }, "NotExistStorageException not thrown");
+
     }
 
     // Общие методы
