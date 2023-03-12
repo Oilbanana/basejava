@@ -5,7 +5,7 @@ import com.anastas.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     public static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -25,8 +25,9 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     // Шаблонные методы ниже, использующие getIndex
+    @Override
     public final Resume get(String uuid) {
-        int index = getIndex(uuid);
+        int index = getSearchIndex(uuid);
         if (index <= -1) {
             throw new NotExistStorageException(uuid);
         }
@@ -34,7 +35,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public final void update(Resume r) {
-        int index = getIndex(r.getUuid());
+        int index = getSearchIndex(r.getUuid());
         if (index > -1) {
             storage[index] = r;
         } else {
@@ -43,7 +44,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public final void save(Resume r) {
-        int index = getIndex(r.getUuid());
+        int index = getSearchIndex(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         }
@@ -57,7 +58,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public final void delete(String uuid) {
-        int index = getIndex(uuid);
+        int index = getSearchIndex(uuid);
         if (index > -1) {
             deleteResume(index);
             size--;
@@ -68,7 +69,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     //Вариативные методы
-    protected abstract int getIndex(String uuid);
+    protected abstract int getSearchIndex(String uuid);
 
     protected abstract void insertResume(int index, Resume r);
 
