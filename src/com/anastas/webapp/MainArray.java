@@ -36,16 +36,16 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume(uuid);
-                    ARRAY_STORAGE.save(r);
+                   // r = new Resume(uuid);
+                    //ARRAY_STORAGE.doSave(r, );
                     printAll();
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(uuid);
+                    //ARRAY_STORAGE.doDelete();
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    //System.out.println(ARRAY_STORAGE.doGet());
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();

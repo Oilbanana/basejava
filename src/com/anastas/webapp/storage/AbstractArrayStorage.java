@@ -26,44 +26,26 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     // Шаблонные методы ниже, использующие getIndex
     @Override
-    public final Resume get(String uuid) {
-        int searchKey = getSearchKey(uuid);
-        if (searchKey <= -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[searchKey];
+    public final Resume doGet(Object searchKey) {
+        return storage[(Integer) searchKey];
     }
 
-    public final void update(Resume r) {
-        int searchKey = getSearchKey(r.getUuid());
-        if (searchKey > -1) {
-            storage[searchKey] = r;
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
+    public final void doUpdate(Resume r, Object searchKey) {
+        storage[(Integer) searchKey] = r;
     }
 
-    public final void save(Resume r) {
-        int searchKey = getSearchKey(r.getUuid());
-        if (searchKey >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (size == STORAGE_LIMIT) {
+    public final void doSave(Resume r, Object searchKey) {
+        if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow ", r.getUuid());
-        } else {
-            insertResume(searchKey, r);
-            size++;
         }
+        insertResume((Integer) searchKey, r);
+        size++;
     }
 
-    public final void delete(String uuid) {
-        int searchKey = getSearchKey(uuid);
-        if (searchKey > -1) {
-            deleteResume(searchKey);
-            size--;
-            storage[size] = null;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    public final void doDelete(Object searchKey) {
+        deleteResume((Integer) searchKey);
+        size--;
+        storage[size] = null;
     }
 
     //Вариативные методы

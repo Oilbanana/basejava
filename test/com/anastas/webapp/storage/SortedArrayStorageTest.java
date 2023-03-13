@@ -1,7 +1,7 @@
 package com.anastas.webapp.storage;
 
 
-class SortedArrayStorageTest extends AbstractArrayStorageTest {
+class SortedArrayStorageTest extends AbstractStorageTest {
 
     SortedArrayStorageTest() {
         super(new SortedArrayStorage());

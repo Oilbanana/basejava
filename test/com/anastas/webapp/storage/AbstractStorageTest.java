@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.anastas.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
     private final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -21,7 +21,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3);
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
-    AbstractArrayStorageTest(Storage storage) {
+    AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -71,7 +71,7 @@ public abstract class AbstractArrayStorageTest {
     void update() {
         Resume updatableResume = new Resume(UUID_1);
         storage.update(updatableResume);
-        Assertions.assertSame(storage.get(updatableResume.getUuid()), updatableResume);
+        Assertions.assertSame(storage.get(updatableResume), updatableResume);
     }
 
     @Test
@@ -113,7 +113,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     void delete() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.delete(UUID_2);
+            storage.delete(RESUME_2);
             assertGet(RESUME_2);
         }, "NotExistStorageException not thrown");
         assertSize(2);
@@ -122,7 +122,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     void deleteNotExist() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.delete("RandomUuid");
+            storage.delete(RESUME_4);
         }, "NotExistStorageException not thrown");
 
     }
@@ -133,6 +133,6 @@ public abstract class AbstractArrayStorageTest {
     }
 
     void assertGet(Resume r) {
-        Assertions.assertEquals(r, storage.get(r.getUuid()));
+        Assertions.assertEquals(r, storage.get(r));
     }
 }
