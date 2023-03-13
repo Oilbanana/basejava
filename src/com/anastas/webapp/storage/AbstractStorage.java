@@ -11,6 +11,6 @@ public abstract class AbstractStorage implements Storage {
     public abstract void save(Resume r);
 
     public abstract void delete(String uuid);
-    protected abstract int getSearchIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
 }

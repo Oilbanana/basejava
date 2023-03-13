@@ -10,7 +10,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume get(String uuid) {
-        return list.get(getSearchIndex(uuid));
+        return list.get(getSearchKey(uuid));
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void update(Resume r) {
-        list.set(getSearchIndex(r.getUuid()),r);
+        list.set(getSearchKey(r.getUuid()), r);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void delete(String uuid) {
-        list.remove(getSearchIndex(uuid));
+        list.remove(getSearchKey(uuid));
     }
 
     @Override
     public Resume[] getAll() {
-     return list.toArray(new Resume[list.size()]);
+        return list.toArray(new Resume[list.size()]);
     }
 
     @Override
@@ -45,12 +45,10 @@ public class ListStorage extends AbstractStorage {
 
 
     @Override
-    protected int getSearchIndex(String uuid) {
-        int index = 0;
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid))
-                index = i;
-                return index;
+                return i;
         }
         return -1;
     }

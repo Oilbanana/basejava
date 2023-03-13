@@ -27,40 +27,38 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     // Шаблонные методы ниже, использующие getIndex
     @Override
     public final Resume get(String uuid) {
-        int index = getSearchIndex(uuid);
-        if (index <= -1) {
+        int searchKey = getSearchKey(uuid);
+        if (searchKey <= -1) {
             throw new NotExistStorageException(uuid);
         }
-        return storage[index];
+        return storage[searchKey];
     }
 
     public final void update(Resume r) {
-        int index = getSearchIndex(r.getUuid());
-        if (index > -1) {
-            storage[index] = r;
+        int searchKey = getSearchKey(r.getUuid());
+        if (searchKey > -1) {
+            storage[searchKey] = r;
         } else {
             throw new NotExistStorageException(r.getUuid());
         }
     }
 
     public final void save(Resume r) {
-        int index = getSearchIndex(r.getUuid());
-        if (index >= 0) {
+        int searchKey = getSearchKey(r.getUuid());
+        if (searchKey >= 0) {
             throw new ExistStorageException(r.getUuid());
-        }
-        else if (size == STORAGE_LIMIT) {
+        } else if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow ", r.getUuid());
-        }
-        else {
-            insertResume(index, r);
+        } else {
+            insertResume(searchKey, r);
             size++;
         }
     }
 
     public final void delete(String uuid) {
-        int index = getSearchIndex(uuid);
-        if (index > -1) {
-            deleteResume(index);
+        int searchKey = getSearchKey(uuid);
+        if (searchKey > -1) {
+            deleteResume(searchKey);
             size--;
             storage[size] = null;
         } else {
@@ -69,7 +67,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     //Вариативные методы
-    protected abstract int getSearchIndex(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 
     protected abstract void insertResume(int index, Resume r);
 
